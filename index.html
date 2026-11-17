@@ -44,7 +44,7 @@ if(stale){$('kalshiTradeMath').textContent='Quotes stale: payout illustrations d
 $('kalshiStatus').textContent='KALSHI CONNECTED';$('kalshiStatus').className='big green';
 }
 function updateKalshiMarket(m){const close=marketClose(m);if(!close||close<=Date.now()){clearKalshi('Returned contract already closed. Awaiting a new active market.');return}if(previousKalshiTicker&&previousKalshiTicker!==m.ticker){marketSwitches++;$('kalshiRollover').textContent='Contract switched automatically: '+previousKalshiTicker+' → '+m.ticker+' · switches since page opened: '+marketSwitches;}
-else if(!previousKalshiTicker){$('kalshiRollo').textContent='Tracking '+m.ticker+' · will attempt to switch when it closes.';}
+else if(!previousKalshiTicker){$('kalshiRollover').textContent='Tracking '+m.ticker+' · will attempt to switch when it closes.';}
 previousKalshiTicker=m.ticker;kalshiMarket=m;kalshiFetchedAt=Date.now();kalshiError=null;rolloverRequested=false;const yb=quoteCents(m,'yes','bid'),ya=quoteCents(m,'yes','ask'),nb=quoteCents(m,'no','bid'),na=quoteCents(m,'no','ask');$('kalshiTitle').textContent=m.title||m.subtitle||'Bitcoin 15-minute contract';$('kalshiTicker').textContent=m.ticker||'';
 $('yesQuote').textContent=cents(yb)+' / '+cents(ya);$('noQuote').textContent=cents(nb)+' / '+cents(na);
 const volume=numberValue(m.volume_fp??m.volume);
