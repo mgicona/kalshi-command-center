@@ -25,7 +25,7 @@ export default async (request) => {
     while (more && records.length < 500) {
       const options = {
         prefix: 'contract/',
-        paginate: true
+        
       };
 
       if (cursor) options.cursor = cursor;
