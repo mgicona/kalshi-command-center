@@ -148,4 +148,132 @@ $('paperExport').onclick=()=>{
  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='kalshi-paper-observations-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
 };
 paperRender();setInterval(paperCheckOutcomes,60000);setInterval(paperCapture,20000);paperCheckOutcomes();
-</script></body></html>
+</script>
+
+<section class="card" id="autoPaperPanel"
+  style="margin:20px 0;padding:20px">
+  <h2>Automatic Paper Testing</h2>
+  <p>Historical BTC 15-minute contract observations</p>
+
+  <div id="autoPaperStatus">
+    Loading saved results...
+  </div>
+
+  <div id="autoPaperStats"
+    style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
+  </div>
+
+  <h3>Recent observations</h3>
+  <div id="autoPaperHistory"
+    style="overflow-x:auto">
+  </div>
+
+  <p style="font-size:12px;opacity:.75">
+    Trend-match statistics are not win probabilities.
+    No real trades are placed.
+  </p>
+</section>
+
+<script>
+async function loadAutoPaper() {
+  const status = document.getElementById('autoPaperStatus');
+  const stats = document.getElementById('autoPaperStats');
+  const history = document.getElementById('autoPaperHistory');
+
+  try {
+    const response = await fetch(
+      '/.netlify/functions/paper-results',
+      { cache: 'no-store' }
+    );
+
+    if (!response.ok) throw Error('Results unavailable');
+
+    const data = await response.json();
+    const s = data.summary;
+    const records = data.records || [];
+
+    status.textContent = 'Saved observations loaded';
+
+    stats.replaceChildren();
+
+    const metrics = [
+      ['Total tests', s.total],
+      ['Settled', s.settled],
+      ['Pending', s.pending],
+      ['Trend matches', s.matches],
+      ['Match rate',
+        s.matchRate == null
+          ? '—'
+          : s.matchRate.toFixed(1) + '%']
+    ];
+
+    for (const [label, value] of metrics) {
+      const card = document.createElement('div');
+      card.style.cssText =
+        'border:1px solid #76528d;border-radius:12px;padding:12px';
+
+      const heading = document.createElement('div');
+      heading.textContent = label;
+      heading.style.opacity = '.75';
+
+      const number = document.createElement('strong');
+      number.textContent = String(value);
+      number.style.fontSize = '24px';
+
+      card.append(heading, number);
+      stats.append(card);
+    }
+
+    history.replaceChildren();
+
+    const table = document.createElement('table');
+    table.style.cssText = 'width:100%;font-size:13px';
+
+    const header = document.createElement('tr');
+
+    for (const name of ['Time','Trend','Score','Result']) {
+      const th = document.createElement('th');
+      th.textContent = name;
+      th.style.padding = '8px';
+      header.append(th);
+    }
+
+    table.append(header);
+
+    for (const r of records.slice(0, 15)) {
+      const tr = document.createElement('tr');
+      const values = [
+        r.capturedAt
+          ? new Date(r.capturedAt).toLocaleString()
+          : '—',
+        r.trend || '—',
+        r.score == null ? '—' : r.score + '/4',
+        r.result || 'Pending'
+      ];
+
+      for (const value of values) {
+        const td = document.createElement('td');
+        td.textContent = String(value);
+        td.style.padding = '8px';
+        tr.append(td);
+      }
+
+      table.append(tr);
+    }
+
+    history.append(table);
+
+    if (data.truncated) {
+      status.textContent =
+        'Showing partial history (record limit reached)';
+    }
+  } catch (error) {
+    status.textContent = 'Unable to load saved results';
+  }
+}
+
+loadAutoPaper();
+setInterval(loadAutoPaper, 60000);
+</script>
+
+</body></html>
