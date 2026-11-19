@@ -1,51 +1,23 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#100a22"><title>Kalshi Command Center</title><style>
-:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#eae7fa;background:#0c0919}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 0%,#271044 0%,#0c0919 50%);min-height:100vh}header{padding:16px 18px;border-bottom:1px solid #403059;background:#110b22e8;position:sticky;top:0;z-index:4;backdrop-filter:blur(15px)}.head{max-width:1450px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{font-weight:900;letter-spacing:.1em;font-size:14px;color:#d8a7ff}.sub{color:#998fb6;font-size:11px;margin-top:4px}.status{border:1px solid #55456e;border-radius:50px;padding:7px 10px;font-size:11px;color:#ffcc8e}.wrap{max-width:1450px;margin:auto;padding:16px;display:grid;gap:14px}.card{border:1px solid #433057;border-radius:15px;background:linear-gradient(145deg,#1d1333,#130e26);padding:17px;min-width:0;box-shadow:0 8px 30px #0003}.label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#aa9bc4;font-weight:800}.big{font-size:clamp(28px,7vw,45px);font-weight:900;letter-spacing:-.04em;margin:10px 0}.muted{color:#9e94b5;font-size:12px;line-height:1.5}.purple{color:#d8a7ff}.amber{color:#ffd188}.green{color:#68e5b8}.red{color:#ff879d}.pill{border:1px solid #654b82;background:#27183f;border-radius:30px;padding:7px 10px;font-size:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}.metric{padding:13px;border:1px solid #3c2c54;background:#120e24;border-radius:10px}.metric strong{display:block;font-size:18px;margin-top:6px}.line{height:1px;background:#433057;margin:16px 0}button{font:inherit;border:1px solid #694e8b;border-radius:9px;background:#2b1b49;color:#fff;padding:10px 14px;cursor:pointer}button:focus-visible{outline:2px solid #d9a6ff}button.active{background:#7546a9}button:disabled{opacity:.5}canvas{display:block;width:100%;height:275px;background:#0e0b1c;border-radius:10px;border:1px solid #3a2b4c}.chartbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chartbar button{padding:7px 12px;font-size:12px}.chart-meta{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;margin-top:12px}.chart-meta b{color:#fff}.warning{color:#ffd188;font-weight:700}.safe{color:#68e5b8}.notice{background:#21182d;border-left:3px solid #d4a1f8;padding:12px;border-radius:6px;font-size:12px;line-height:1.6}.footer{text-align:center;color:#857b9e;font-size:11px;padding:14px 0 25px}.meter{height:9px;border-radius:12px;background:#392b4c;overflow:hidden;margin:13px 0}.meter>div{height:100%;width:0;background:linear-gradient(90deg,#9163d5,#dbabff);transition:width .2s}.check{padding:10px 0;border-bottom:1px solid #342842;display:flex;justify-content:space-between;font-size:13px;gap:10px}.check:last-child{border:0}.err{color:#ff9db0}.small{font-size:12px}a{color:#dbb5ff} .chart{min-height:410px}.signal{text-align:center}.signal .big{font-size:42px}.mono{font-variant-numeric:tabular-nums;font-family:ui-monospace,monospace} @media(min-width:800px){.wrap{grid-template-columns:1fr 1.65fr 1fr}.chart{grid-column:2;grid-row:1 / span 2}.signal{grid-column:1;grid-row:1}.market{grid-column:3;grid-row:1}.details{grid-column:1;grid-row:2}.risk{grid-column:3;grid-row:2}canvas{height:385px}}@media(max-width:420px){.wrap{padding:10px;gap:10px}.card{padding:14px}.brand{font-size:12px}.sub{font-size:10px}header{padding:13px 10px}}
-.paper table{width:100%;border-collapse:collapse;font-size:11px}.paper th,.paper td{padding:9px 6px;text-align:left;border-bottom:1px solid #433057;white-space:nowrap}.paper .tablewrap{overflow-x:auto}.paper .row{margin-top:12px}.paper button{font-size:12px}.paper .metric strong{font-size:16px}</style></head><body><header><div class="head"><div><div class="brand">◈ KALSHI COMMAND CENTER</div><div class="sub">BTC · 15-minute market research · read-only</div></div><span class="status" id="globalStatus">CONNECTING</span></div></header><main class="wrap">
-<section class="card signal"><div class="label">Kraken technical trend · not a Kalshi prediction</div><div class="big amber" id="direction">UNAVAILABLE</div><div class="pill" id="action">WAIT — awaiting verified data</div><div class="line"></div><div class="label">Technical checks passed (not win odds)</div><div class="big purple" id="score">— / 4</div><div class="meter"><div id="meter"></div></div><div class="muted">These checks use completed candles and may lag sudden reversals. 4/4 is not a win probability or a reason to buy YES/NO.</div></section>
-<section class="card chart"><div class="row"><div><div class="label">Bitcoin chart · Kraken (completed candles)</div><div class="big mono" id="spotPrice">—</div><div class="muted" id="spotAge">Live Kraken ticker: awaiting response</div></div><div class="pill" id="freshness">DATA UNAVAILABLE</div></div><div class="chartbar"><button class="active" id="btn15">15m</button><button id="btn5">5m</button><button id="refresh">↻ Refresh</button></div><canvas id="chart" aria-label="Bitcoin candlestick price chart with EMA overlays"></canvas><div class="chart-meta"><span><b class="green">━</b> EMA 9</span><span><b class="purple">━</b> EMA 21</span><span>Completed candles only</span></div><p class="muted" id="updated">Waiting for market data.</p></section>
-<section class="card market"><div class="label">Kalshi · BTC 15-minute contract</div><div class="big amber" id="kalshiStatus" style="font-size:28px">CONNECTING</div><p class="muted" id="kalshiTitle">Looking for an active Kalshi Bitcoin 15-minute contract.</p><p class="muted mono" id="kalshiTicker"></p><div class="metrics"><div class="metric"><div class="label">YES bid / ask</div><strong id="yesQuote">— / —</strong></div><div class="metric"><div class="label">NO bid / ask</div><strong id="noQuote">— / —</strong></div><div class="metric"><div class="label">Volume · contracts traded</div><strong id="kalshiVolume">—</strong></div><div class="metric"><div class="label">Time to expiry</div><strong id="kalshiCountdown">—</strong></div><div class="metric"><div class="label">Kalshi settlement threshold</div><strong id="kalshiStrike">—</strong></div><div class="metric"><div class="label">Live Kraken ticker vs threshold</div><strong id="kalshiDistance">—</strong></div></div><p class="muted">Kraken ticker is NOT Kalshi’s settlement-reference price. A positive distance here does not establish that YES will win.</p><p class="muted" id="kalshiQuoteAge">Quote age: awaiting first response</p><p class="muted" id="kalshiRollover">Automatic market selection enabled.</p><p class="muted" id="kalshiDiagnostics">Market search: awaiting API response.</p><p class="muted" id="kalshiTradeMath">Entry cost and payout example will appear when an ask is available.</p><p class="muted warning" id="kalshiQuoteWarning">Waiting for a verified quote.</p><div class="line"></div><div class="notice" id="kalshiNotice">Loading public Kalshi market data. No contract odds or payout will be fabricated.</div><p class="muted" id="kalshiUpdated"></p><button id="kalshiRefresh" type="button">↻ Refresh Kalshi</button></section>
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#eae7fa;background:#0c0919}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 0%,#271044 0%,#0c0919 50%);min-height:100vh}header{padding:16px 18px;border-bottom:1px solid #403059;background:#110b22e8;position:sticky;top:0;z-index:4;backdrop-filter:blur(15px)}.head{max-width:1450px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{font-weight:900;letter-spacing:.1em;font-size:14px;color:#d8a7ff}.sub{color:#998fb6;font-size:11px;margin-top:4px}.status{border:1px solid #55456e;border-radius:50px;padding:7px 10px;font-size:11px;color:#ffcc8e}.wrap{max-width:1450px;margin:auto;padding:16px;display:grid;gap:14px}.card{border:1px solid #433057;border-radius:15px;background:linear-gradient(145deg,#1d1333,#130e26);padding:17px;min-width:0;box-shadow:0 8px 30px #0003}.label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#aa9bc4;font-weight:800}.big{font-size:clamp(28px,7vw,45px);font-weight:900;letter-spacing:-.04em;margin:10px 0}.muted{color:#9e94b5;font-size:12px;line-height:1.5}.purple{color:#d8a7ff}.amber{color:#ffd188}.green{color:#68e5b8}.red{color:#ff879d}.pill{border:1px solid #654b82;background:#27183f;border-radius:30px;padding:7px 10px;font-size:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}.metric{padding:13px;border:1px solid #3c2c54;background:#120e24;border-radius:10px}.metric strong{display:block;font-size:18px;margin-top:6px}.line{height:1px;background:#433057;margin:16px 0}button{font:inherit;border:1px solid #694e8b;border-radius:9px;background:#2b1b49;color:#fff;padding:10px 14px;cursor:pointer}button:focus-visible{outline:2px solid #d9a6ff}button.active{background:#7546a9}button:disabled{opacity:.5}canvas{display:block;width:100%;height:275px;background:#0e0b1c;border-radius:10px;border:1px solid #3a2b4c}.chartbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chartbar button{padding:7px 12px;font-size:12px}.chart-meta{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;margin-top:12px}.chart-meta b{color:#fff}.warning{color:#ffd188;font-weight:700}.safe{color:#68e5b8}.notice{background:#21182d;border-left:3px solid #d4a1f8;padding:12px;border-radius:6px;font-size:12px;line-height:1.6}.footer{text-align:center;color:#857b9e;font-size:11px;padding:14px 0 25px}.meter{height:9px;border-radius:12px;background:#392b4c;overflow:hidden;margin:13px 0}.meter>div{height:100%;width:0;background:linear-gradient(90deg,#9163d5,#dbabff);transition:width .2s}.check{padding:10px 0;border-bottom:1px solid #342842;display:flex;justify-content:space-between;font-size:13px;gap:10px}.check:last-child{border:0}.err{color:#ff9db0}.small{font-size:12px}a{color:#dbb5ff} .threshold-panel{margin-top:16px;padding:14px;background:#120d25;border:1px solid #49335f;border-radius:12px}.threshold-panel canvas{height:165px;margin:12px 0}.threshold-panel .big{margin:4px 0}.chart{min-height:410px}.signal{text-align:center}.signal .big{font-size:42px}.mono{font-variant-numeric:tabular-nums;font-family:ui-monospace,monospace} @media(min-width:800px){.wrap{grid-template-columns:1fr 1.65fr 1fr}.chart{grid-column:2;grid-row:1 / span 2}.signal{grid-column:1;grid-row:1}.market{grid-column:3;grid-row:1}.details{grid-column:1;grid-row:2}.risk{grid-column:3;grid-row:2}canvas{height:385px}}@media(max-width:420px){.wrap{padding:10px;gap:10px}.card{padding:14px}.brand{font-size:12px}.sub{font-size:10px}header{padding:13px 10px}}
+</style></head><body><header><div class="head"><div><div class="brand">◈ KALSHI COMMAND CENTER</div><div class="sub">BTC · 15-minute market research · read-only</div></div><span class="status" id="globalStatus">CONNECTING</span></div></header><main class="wrap">
+<section class="card signal"><div class="label">Directional analysis</div><div class="big amber" id="direction">UNAVAILABLE</div><div class="pill" id="action">WAIT — awaiting verified data</div><div class="line"></div><div class="label">Technical confirmations</div><div class="big purple" id="score">— / 4</div><div class="meter"><div id="meter"></div></div><div class="muted">Technical checks are not a probability of profit. No trade recommendation is made.</div></section>
+<section class="card chart"><div class="row"><div><div class="label">Bitcoin spot chart · Kraken</div><div class="big mono" id="spotPrice">—</div></div><div class="pill" id="freshness">DATA UNAVAILABLE</div></div><div class="chartbar"><button class="active" id="btn15">15m</button><button id="btn5">5m</button><button id="refresh">↻ Refresh</button></div><canvas id="chart" aria-label="Bitcoin candlestick price chart with EMA overlays"></canvas><div class="chart-meta"><span><b class="green">━</b> EMA 9</span><span><b class="purple">━</b> EMA 21</span><span>Completed candles only</span><span class="amber">- - Kalshi threshold (if in chart range)</span></div><p class="muted" id="thresholdChartNote">Waiting for an active contract threshold.</p><p class="muted" id="updated">Waiting for market data.</p><div class="threshold-panel" aria-label="Threshold movement tracker"><div class="row"><div><div class="label">BTC versus Kalshi threshold · live reference</div><div class="big mono" id="liveGap" style="font-size:30px">—</div></div><div class="pill" id="gapDirection">AWAITING DATA</div></div><p class="muted" id="liveReference">Awaiting Kraken's last-traded price and an active Kalshi settlement threshold.</p><canvas id="gapChart" aria-label="History of Kraken price minus Kalshi contract threshold since this page was opened"></canvas><div class="row"><span class="muted" id="gapHistory">History starts when both live feeds are available.</span><span class="muted" id="gapMove">Change: —</span></div><p class="muted">Green = Kraken last trade above the threshold; pink = below. This is NOT Kalshi's CF Benchmarks settlement feed. History is recorded only while this page stays open, not a backtest.</p></div></section>
+<section class="card market"><div class="label">Kalshi · BTC 15-minute contract</div><div class="big amber" id="kalshiStatus" style="font-size:28px">CONNECTING</div><p class="muted" id="kalshiTitle">Looking for an active Kalshi Bitcoin 15-minute contract.</p><p class="muted mono" id="kalshiTicker"></p><div class="metrics"><div class="metric"><div class="label">YES bid / ask</div><strong id="yesQuote">— / —</strong></div><div class="metric"><div class="label">NO bid / ask</div><strong id="noQuote">— / —</strong></div><div class="metric"><div class="label">Volume · contracts traded</div><strong id="kalshiVolume">—</strong></div><div class="metric"><div class="label">Time to expiry</div><strong id="kalshiCountdown">—</strong></div><div class="metric"><div class="label">Kalshi settlement threshold</div><strong id="kalshiStrike">—</strong></div><div class="metric"><div class="label">Kraken last trade vs threshold</div><strong id="kalshiDistance">—</strong></div></div><p class="muted">Kraken last-trade reference is separate from Kalshi’s CF Benchmarks settlement-price source.</p><p class="muted" id="kalshiQuoteAge">Quote age: awaiting first response</p><p class="muted" id="kalshiRollover">Automatic market selection enabled.</p><p class="muted" id="kalshiDiagnostics">Market search: awaiting API response.</p><p class="muted" id="kalshiTradeMath">Entry cost and payout example will appear when an ask is available.</p><p class="muted warning" id="kalshiQuoteWarning">Waiting for a verified quote.</p><div class="line"></div><div class="notice" id="kalshiNotice">Loading public Kalshi market data. No contract odds or payout will be fabricated.</div><p class="muted" id="kalshiUpdated"></p><button id="kalshiRefresh" type="button">↻ Refresh Kalshi</button></section>
 <section class="card details"><div class="label">Signal evidence</div><div id="checks"><p class="muted">Indicator checks appear when enough verified candles are available.</p></div><div class="line"></div><div class="muted" id="rsi">RSI(14): —</div><div class="muted" id="volume">Relative volume: —</div><div class="muted" id="ema">EMA 9 / EMA 21: —</div></section>
-<section class="card risk"><div class="label">Risk monitor</div><div class="big amber" style="font-size:26px">NO TRADE</div><p class="muted">A completed-candle technical trend is not a Kalshi outcome prediction and does not establish that a contract is profitable. You need verified YES/NO quotes, spread, fees, expiration and settlement rules.</p><div class="line"></div><div class="label">Source and limitations</div><p class="muted">Spot data: Kraken OHLC (completed candles) and a separate Kraken ticker request. The newest still-forming candle is excluded. Indicators are calculated locally. The browser may block the API or the network may fail; in that case values remain unavailable. This is not a trading or order-entry app.</p><p class="muted" id="error"></p></section>
-<section class="card paper"><div class="label">Paper testing · no real trades</div><div class="big purple" style="font-size:25px">Contract outcome log</div><p class="muted">While this page stays open, records one snapshot per contract when 2–5 minutes remain and completed 15-minute Kraken candles are fresh. Records the technical trend as a hypothesis, NOT a trade recommendation. Settlement results are checked later through Kalshi. No orders are placed.</p><div class="metrics"><div class="metric"><div class="label">Logged snapshots</div><strong id="paperTotal">0</strong></div><div class="metric"><div class="label">Settled / pending</div><strong id="paperSettled">0 / 0</strong></div><div class="metric"><div class="label">Trend match rate</div><strong id="paperAccuracy">—</strong></div><div class="metric"><div class="label">Last check</div><strong id="paperLast" style="font-size:12px">—</strong></div></div><div class="row"><button id="paperResolve" type="button">↻ Check outcomes</button><button id="paperExport" type="button">Export CSV</button></div><p class="muted" id="paperStatus">No observations logged yet. This browser stores the data locally.</p><div class="tablewrap"><table><thead><tr><th>Snapshot</th><th>Contract</th><th>Trend</th><th>Checks</th><th>YES ask</th><th>NO ask</th><th>Result</th><th>Match?</th></tr></thead><tbody id="paperRows"><tr><td colspan="8">No snapshots yet</td></tr></tbody></table></div><p class="muted">Match rate = how often the completed-candle trend agrees with the official YES/NO outcome, not win probability or net profitability. No fees, slippage or execution are modeled. Leaving this tab closed pauses collection. Private browsing or clearing website data can erase the log; export CSV for backup. A meaningful evaluation requires many settled examples across different conditions.</p></section></main><div class="footer">Kalshi Command Center · Research only · No trades executed · No guaranteed outcomes</div>
+<section class="card risk"><div class="label">Risk monitor</div><div class="big amber" style="font-size:26px">NO TRADE</div><p class="muted">A directional spot signal does not establish that a Kalshi contract is profitable. You need verified YES/NO quotes, spread, fees, expiration and settlement rules.</p><div class="line"></div><div class="label">Source and limitations</div><p class="muted">Chart candles: Kraken public OHLC API. Threshold gap uses Kraken public Ticker last trade (not Kalshi settlement data). The newest still-forming candle is excluded. Indicators are calculated locally. The browser may block the API or the network may fail; in that case values remain unavailable. This is not a trading or order-entry app.</p><p class="muted" id="error"></p></section>
+</main><div class="footer">Kalshi Command Center · Research only · No trades executed · No guaranteed outcomes</div>
 <script>
-const $=id=>document.getElementById(id);let timeframe=15,records=[],lastSpotPrice=null,lastSpotFetchedAt=0,requestId=0;const pair='XBTUSD';
+const $=id=>document.getElementById(id);let timeframe=15,records=[],lastSpotPrice=null,lastSpotFetchedAt=0;const pair='XBTUSD';let lastTickerPrice=null,lastTickerFetchedAt=0,tickerBusy=false;let gapHistory=[],gapTicker=null;const TICKER_FRESH_MS=60000;
 function ema(values,period){let out=Array(values.length).fill(null);if(values.length<period)return out;let e=values.slice(0,period).reduce((a,b)=>a+b,0)/period;out[period-1]=e;for(let i=period;i<values.length;i++){e=values[i]*(2/(period+1))+e*(1-2/(period+1));out[i]=e}return out}
 function rsi(v,p=14){if(v.length<=p)return null;let gain=0,loss=0;for(let i=1;i<=p;i++){let d=v[i]-v[i-1];gain+=Math.max(0,d);loss+=Math.max(0,-d)}gain/=p;loss/=p;for(let i=p+1;i<v.length;i++){let d=v[i]-v[i-1];gain=(gain*(p-1)+Math.max(0,d))/p;loss=(loss*(p-1)+Math.max(0,-d))/p}return loss===0?(gain===0?50:100):100-100/(1+gain/loss)}
 function fmt(n,dec=2){return Number.isFinite(n)?n.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}):'—'}
-function reset(message){records=[];lastSpotPrice=null;lastSpotFetchedAt=0;if(typeof renderDistance==="function")renderDistance();$('spotAge').textContent='Live Kraken ticker: unavailable';for(let id of ['spotPrice','rsi','ema','volume'])$(id).textContent=id==='spotPrice'?'—':id+': —';$('globalStatus').textContent='OFFLINE';$('freshness').textContent='DATA UNAVAILABLE';$('direction').textContent='UNAVAILABLE';$('action').textContent='WAIT — no verified signal';$('score').textContent='— / 4';$('meter').style.width='0%';$('checks').innerHTML='<p class="muted">No verified candle data.</p>';$('updated').textContent='No fresh completed candles verified.';$('error').textContent=message;draw()}
-function analyze(c){let close=c.map(x=>x.close),e9=ema(close,9),e21=ema(close,21),last=c.at(-1),r=rsi(close),a=e9.at(-1),b=e21.at(-1);let prev=c.slice(-21,-1),base=prev.reduce((s,x)=>s+x.volume,0)/prev.length,rv=base>0?last.volume/base:null;let trend=a>b?'UP':a<b?'DOWN':'FLAT';let checks=[['EMA trend',trend!=='FLAT'],['RSI momentum',trend==='UP'?r>=55:trend==='DOWN'?r<=45:false],['Volume ≥ 1.2×',rv!==null&&rv>=1.2],['Candle confirmation',trend==='UP'?last.close>last.open:trend==='DOWN'?last.close<last.open:false]];let score=checks.filter(x=>x[1]).length;let age=(Date.now()/1000-(last.time+timeframe*60));let fresh=age<=timeframe*60+90&&age>=-60;return{last,r,a,b,rv,trend,checks,score,fresh,age}}
-function update(c){records=c;let s=analyze(c);if(typeof renderDistance==='function')renderDistance();$('spotPrice').textContent='—';$('spotAge').textContent='Waiting for live Kraken ticker';$('rsi').textContent='RSI(14): '+fmt(s.r,1);$('ema').textContent='EMA 9 / EMA 21: $'+fmt(s.a)+' / $'+fmt(s.b);$('volume').textContent='Relative volume: '+fmt(s.rv,2)+'×';$('updated').textContent='Latest completed candle closed '+new Date((s.last.time+timeframe*60)*1000).toLocaleString()+' · '+timeframe+'m timeframe · Kraken spot';$('freshness').textContent=s.fresh?'FRESH CANDLES':'STALE CANDLES';$('globalStatus').textContent=s.fresh?'KRAKEN CONNECTED':'STALE DATA';$('score').textContent=s.fresh?s.score+' / 4':'— / 4';$('meter').style.width=s.fresh?s.score*25+'%':'0%';$('direction').textContent=s.fresh?'TREND: '+s.trend:'UNAVAILABLE';$('direction').className='big purple';$('action').textContent=!s.fresh?'NO KALSHI SIGNAL — candle data stale':'NO KALSHI SIGNAL — trend is not a settlement prediction';$('checks').innerHTML=s.checks.map(([name,ok])=>'<div class="check"><span>'+name+'</span><strong class="'+(ok?'green':'amber')+'">'+(ok?'PASS':'MISSING')+'</strong></div>').join('');$('error').textContent=s.fresh?'':'Candle feed is stale. Signals are disabled.';draw()}
-async function load(){
- const thisRequest=++requestId,interval=timeframe;
- reset('Fetching Kraken candles and ticker…');$('globalStatus').textContent='LOADING';
- const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),12000);
- try{
-  const [ohlcResponse,tickerResponse]=await Promise.all([
-   fetch('https://api.kraken.com/0/public/OHLC?pair='+pair+'&interval='+interval,{signal:ctrl.signal,cache:'no-store'}),
-   fetch('https://api.kraken.com/0/public/Ticker?pair='+pair,{signal:ctrl.signal,cache:'no-store'})
-  ]);
-  if(thisRequest!==requestId)return;
-  if(!ohlcResponse.ok||!tickerResponse.ok)throw Error('Kraken HTTP error '+ohlcResponse.status+'/'+tickerResponse.status);
-  const [data,tickerData]=await Promise.all([ohlcResponse.json(),tickerResponse.json()]);
-  if(thisRequest!==requestId)return;
-  if(data.error?.length||tickerData.error?.length)throw Error([...(data.error||[]),...(tickerData.error||[])].join(', '));
-  const key=Object.keys(data.result||{}).find(x=>x!=='last');
-  const tickerKey=Object.keys(tickerData.result||{})[0];
-  const livePrice=Number(tickerData.result?.[tickerKey]?.c?.[0]);
-  if(!key||!Number.isFinite(livePrice)||livePrice<=0)throw Error('Missing verified ticker or candle data');
-  const all=data.result[key].map(r=>({time:Number(r[0]),open:Number(r[1]),high:Number(r[2]),low:Number(r[3]),close:Number(r[4]),volume:Number(r[6])}));
-  const closed=all.filter(x=>x.time+interval*60<=Date.now()/1000-2);
-  if(closed.length<40)throw Error('Not enough completed candles');
-  update(closed.slice(-100));
-  lastSpotPrice=livePrice;lastSpotFetchedAt=Date.now();
-  $('spotPrice').textContent='$'+fmt(livePrice);
-  $('spotAge').textContent='Kraken ticker fetched '+new Date(lastSpotFetchedAt).toLocaleTimeString()+' · separate from Kalshi settlement feed';
-  renderDistance();
- }catch(e){if(thisRequest===requestId)reset('Kraken data unavailable: '+e.message+'. Trend and comparison disabled.');}
- finally{clearTimeout(timer)}
-}
-function draw(){const cv=$('chart'),ctx=cv.getContext('2d'),rect=cv.getBoundingClientRect(),dpr=window.devicePixelRatio||1;cv.width=Math.max(1,Math.round(rect.width*dpr));cv.height=Math.max(1,Math.round(rect.height*dpr));ctx.scale(dpr,dpr);const w=rect.width,h=rect.height;ctx.fillStyle='#0e0b1c';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#342943';ctx.lineWidth=1;for(let i=1;i<=4;i++){let y=i*h/5;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}if(!records.length){ctx.fillStyle='#9c8db4';ctx.font='13px system-ui';ctx.textAlign='center';ctx.fillText('Waiting for verified candle data',w/2,h/2);return}let arr=records.slice(-Math.min(48,records.length)),min=Math.min(...arr.map(x=>x.low)),max=Math.max(...arr.map(x=>x.high)),pad=(max-min)*.13||1;min-=pad;max+=pad;let y=v=>15+(max-v)/(max-min)*(h-45),step=(w-48)/arr.length;arr.forEach((x,i)=>{let xx=16+(i+.5)*step,up=x.close>=x.open;ctx.strokeStyle=up?'#66e0b2':'#ff829c';ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.moveTo(xx,y(x.high));ctx.lineTo(xx,y(x.low));ctx.stroke();let top=y(Math.max(x.open,x.close)),bot=y(Math.min(x.open,x.close));ctx.fillRect(xx-Math.max(1,step*.27),top,Math.max(2,step*.54),Math.max(1,bot-top))});let closes=records.map(x=>x.close);[[9,'#68e5b8'],[21,'#d8a7ff']].forEach(([p,color])=>{let v=ema(closes,p).slice(-arr.length);ctx.strokeStyle=color;ctx.lineWidth=1.6;ctx.beginPath();v.forEach((z,i)=>{if(z===null)return;let xx=16+(i+.5)*step;i===0?ctx.moveTo(xx,y(z)):ctx.lineTo(xx,y(z))});ctx.stroke()});ctx.fillStyle='#b6aacb';ctx.font='11px system-ui';ctx.textAlign='right';ctx.fillText('$'+fmt(max-pad,0),w-7,13);ctx.fillText('$'+fmt(min+pad,0),w-7,h-8)}
-$('btn15').onclick=()=>{timeframe=15;$('btn15').classList.add('active');$('btn5').classList.remove('active');load()};$('btn5').onclick=()=>{timeframe=5;$('btn5').classList.add('active');$('btn15').classList.remove('active');load()};$('refresh').onclick=load;window.addEventListener('resize',draw);load();setInterval(load,30000);
+function reset(message){records=[];lastSpotPrice=null;lastSpotFetchedAt=0;if(typeof renderDistance==="function")renderDistance();for(let id of ['spotPrice','rsi','ema','volume'])$(id).textContent=id==='spotPrice'?'—':id+': —';$('globalStatus').textContent='OFFLINE';$('freshness').textContent='DATA UNAVAILABLE';$('direction').textContent='UNAVAILABLE';$('action').textContent='WAIT — no verified signal';$('score').textContent='— / 4';$('meter').style.width='0%';$('checks').innerHTML='<p class="muted">No verified candle data.</p>';$('updated').textContent='No fresh completed candles verified.';$('error').textContent=message;draw()}
+function analyze(c){let close=c.map(x=>x.close),e9=ema(close,9),e21=ema(close,21),last=c.at(-1),r=rsi(close),a=e9.at(-1),b=e21.at(-1);let prev=c.slice(-21,-1),base=prev.reduce((s,x)=>s+x.volume,0)/prev.length,rv=base>0?last.volume/base:null;let trend=a>b?'UP':a<b?'DOWN':'FLAT';let checks=[['EMA trend',trend!=='FLAT'],['RSI momentum',trend==='UP'?r>=55:trend==='DOWN'?r<=45:false],['Volume ≥ 1.2×',rv!==null&&rv>=1.2],['Candle confirmation',trend==='UP'?last.close>last.open:trend==='DOWN'?last.close<last.open:false]];let score=checks.filter(x=>x[1]).length;let age=(Date.now()/1000-(last.time+timeframe*60));let fresh=age<=timeframe*120&&age>=-60;return{last,r,a,b,rv,trend,checks,score,fresh,age}}
+function update(c){records=c;let s=analyze(c);lastSpotPrice=s.last.close;lastSpotFetchedAt=Date.now();if(typeof renderDistance==='function')renderDistance();$('spotPrice').textContent='$'+fmt(s.last.close);$('rsi').textContent='RSI(14): '+fmt(s.r,1);$('ema').textContent='EMA 9 / EMA 21: $'+fmt(s.a)+' / $'+fmt(s.b);$('volume').textContent='Relative volume: '+fmt(s.rv,2)+'×';$('updated').textContent='Latest completed candle closed '+new Date((s.last.time+timeframe*60)*1000).toLocaleString()+' · '+timeframe+'m timeframe · Kraken spot';$('freshness').textContent=s.fresh?'FRESH CANDLES':'STALE CANDLES';$('globalStatus').textContent=s.fresh?'KRAKEN CONNECTED':'STALE DATA';$('score').textContent=s.fresh?s.score+' / 4':'— / 4';$('meter').style.width=s.fresh?s.score*25+'%':'0%';$('direction').textContent=s.fresh?s.trend:'UNAVAILABLE';$('direction').className='big '+(s.trend==='UP'?'green':s.trend==='DOWN'?'red':'amber');$('action').textContent=!s.fresh?'WAIT — stale data':s.score===4?'SPOT SETUP — NOT A KALSHI TRADE':'WAIT — '+(4-s.score)+' check(s) missing';$('checks').innerHTML=s.checks.map(([name,ok])=>'<div class="check"><span>'+name+'</span><strong class="'+(ok?'green':'amber')+'">'+(ok?'PASS':'MISSING')+'</strong></div>').join('');$('error').textContent=s.fresh?'':'Candle feed is stale. Signals are disabled.';draw()}
+async function load(){reset('Fetching Kraken public OHLC data…');$('globalStatus').textContent='LOADING';try{const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),12000);let res;try{res=await fetch('https://api.kraken.com/0/public/OHLC?pair='+pair+'&interval='+timeframe,{signal:controller.signal,cache:'no-store'})}finally{clearTimeout(timeout)}if(!res.ok)throw Error('HTTP '+res.status);let data=await res.json();if(data.error?.length)throw Error(data.error.join(', '));let key=Object.keys(data.result||{}).find(x=>x!=='last');if(!key)throw Error('Missing candle array');let all=data.result[key].map(r=>({time:Number(r[0]),open:Number(r[1]),high:Number(r[2]),low:Number(r[3]),close:Number(r[4]),volume:Number(r[6])}));let closed=all.filter(x=>x.time+timeframe*60<=Date.now()/1000-2);if(closed.length<40)throw Error('Not enough completed candles');update(closed.slice(-100))}catch(e){reset('Live Kraken data unavailable: '+e.message+'. This can be caused by network restrictions or browser cross-origin rules.')}}
+function draw(){const cv=$('chart'),ctx=cv.getContext('2d'),rect=cv.getBoundingClientRect(),dpr=window.devicePixelRatio||1;cv.width=Math.max(1,Math.round(rect.width*dpr));cv.height=Math.max(1,Math.round(rect.height*dpr));ctx.scale(dpr,dpr);const w=rect.width,h=rect.height;ctx.fillStyle='#0e0b1c';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#342943';ctx.lineWidth=1;for(let i=1;i<=4;i++){let y=i*h/5;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}if(!records.length){ctx.fillStyle='#9c8db4';ctx.font='13px system-ui';ctx.textAlign='center';ctx.fillText('Waiting for verified candle data',w/2,h/2);return}let arr=records.slice(-Math.min(48,records.length)),min=Math.min(...arr.map(x=>x.low)),max=Math.max(...arr.map(x=>x.high)),pad=(max-min)*.13||1;min-=pad;max+=pad;let y=v=>15+(max-v)/(max-min)*(h-45),step=(w-48)/arr.length;arr.forEach((x,i)=>{let xx=16+(i+.5)*step,up=x.close>=x.open;ctx.strokeStyle=up?'#66e0b2':'#ff829c';ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.moveTo(xx,y(x.high));ctx.lineTo(xx,y(x.low));ctx.stroke();let top=y(Math.max(x.open,x.close)),bot=y(Math.min(x.open,x.close));ctx.fillRect(xx-Math.max(1,step*.27),top,Math.max(2,step*.54),Math.max(1,bot-top))});let closes=records.map(x=>x.close);[[9,'#68e5b8'],[21,'#d8a7ff']].forEach(([p,color])=>{let v=ema(closes,p).slice(-arr.length);ctx.strokeStyle=color;ctx.lineWidth=1.6;ctx.beginPath();v.forEach((z,i)=>{if(z===null)return;let xx=16+(i+.5)*step;i===0?ctx.moveTo(xx,y(z)):ctx.lineTo(xx,y(z))});ctx.stroke()});drawThresholdOverlay(ctx,w,h,min,max);ctx.fillStyle='#b6aacb';ctx.font='11px system-ui';ctx.textAlign='right';ctx.fillText('$'+fmt(max-pad,0),w-7,13);ctx.fillText('$'+fmt(min+pad,0),w-7,h-8)}
+$('btn15').onclick=()=>{timeframe=15;$('btn15').classList.add('active');$('btn5').classList.remove('active');load()};$('btn5').onclick=()=>{timeframe=5;$('btn5').classList.add('active');$('btn15').classList.remove('active');load()};$('refresh').onclick=load;window.addEventListener('resize',draw);
 
 // Kalshi market data is read-only; no credentials or order entry.
 const KALSHI_BASE='/.netlify/functions/kalshi';
@@ -60,9 +32,58 @@ function marketClose(m){const raw=m.close_time||m.expiration_time||m.expected_ex
 function marketOpen(m){const t=Date.parse(m.open_time||'');return Number.isFinite(t)?t:null}
 function readableTime(t){return Number.isFinite(t)?new Date(t).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):'unknown'}
 function isTradingMarket(m,now){return !!(m&&m.ticker&&String(m.status).toLowerCase()==='active'&&marketClose(m)!==null&&marketClose(m)>now+1000&&(marketOpen(m)===null||marketOpen(m)<=now))}
-function clearKalshi(message){kalshiMarket=null;kalshiFetchedAt=0;kalshiError=message;$('kalshiQuoteAge').textContent='Quote age: unavailable';$('kalshiTradeMath').textContent='Entry price and payout unavailable.';$('kalshiStatus').textContent='DATA UNAVAILABLE';$('kalshiStatus').className='big amber';$('kalshiTitle').textContent='No verified active Kalshi contract';$('kalshiTicker').textContent='';for(const id of ['yesQuote','noQuote','kalshiVolume','kalshiCountdown','kalshiStrike','kalshiDistance'])$(id).textContent='—';$('kalshiQuoteWarning').textContent='Quotes unavailable — do not use previous prices.';$('kalshiNotice').textContent=message;$('kalshiUpdated').textContent='No current verified Kalshi quote.'}
+function clearKalshi(message){kalshiMarket=null;kalshiFetchedAt=0;kalshiError=message;$('kalshiQuoteAge').textContent='Quote age: unavailable';$('kalshiTradeMath').textContent='Entry price and payout unavailable.';$('kalshiStatus').textContent='DATA UNAVAILABLE';$('kalshiStatus').className='big amber';$('kalshiTitle').textContent='No verified active Kalshi contract';$('kalshiTicker').textContent='';for(const id of ['yesQuote','noQuote','kalshiVolume','kalshiCountdown','kalshiStrike','kalshiDistance'])$(id).textContent='—';$('kalshiQuoteWarning').textContent='Quotes unavailable — do not use previous prices.';$('kalshiNotice').textContent=message;renderTracker();draw();$('kalshiUpdated').textContent='No current verified Kalshi quote.'}
 async function kalshiGet(path){const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),10000);try{const response=await fetch(KALSHI_BASE+path,{signal:ctrl.signal,cache:'no-store'});if(!response.ok)throw Error('HTTP '+response.status);return await response.json()}finally{clearTimeout(timer)}}
-function renderDistance(){const m=kalshiMarket,threshold=m?verifiedStrike(m):null;const goodSpot=Number.isFinite(lastSpotPrice)&&Date.now()-lastSpotFetchedAt<45000; if(!m||threshold===null||!goodSpot){$('kalshiDistance').textContent='—';return}const diff=lastSpotPrice-threshold;$('kalshiDistance').textContent=(diff>=0?'+':'−')+'$'+fmt(Math.abs(diff))+' (Kraken only)'}
+
+// Live reference uses Kraken's most recent trade, not a completed OHLC candle or Kalshi's settlement feed.
+async function loadTicker(){if(tickerBusy)return;tickerBusy=true;
+try{const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),10000);let response;
+try{response=await fetch('https://api.kraken.com/0/public/Ticker?pair=XBTUSD',{cache:'no-store',signal:controller.signal});}finally{clearTimeout(timeout)}
+if(!response.ok)throw Error('Ticker HTTP '+response.status);
+const data=await response.json();if(data.error?.length)throw Error(data.error.join('; '));
+const key=Object.keys(data.result||{})[0];const price=Number(data.result?.[key]?.c?.[0]);if(!Number.isFinite(price)||price<=0)throw Error('No valid last-trade price');
+lastTickerPrice=price;lastTickerFetchedAt=Date.now();
+}catch(e){lastTickerPrice=null;lastTickerFetchedAt=0;$('liveReference').textContent='Kraken last-trade price unavailable: '+String(e.message||e)+'. No live gap is calculated.';}
+finally{tickerBusy=false;renderTracker();renderDistance();}}
+function addGapSample(){if(!kalshiMarket||!isTradingMarket(kalshiMarket,Date.now()))return;
+const strike=verifiedStrike(kalshiMarket);if(strike===null||!Number.isFinite(lastTickerPrice)||Date.now()-lastTickerFetchedAt>TICKER_FRESH_MS)return;
+const ticker=kalshiMarket.ticker;if(ticker!==gapTicker){gapTicker=ticker;gapHistory=[];}
+const now=Date.now();if(gapHistory.length && now-gapHistory.at(-1).time<15000)return;
+gapHistory.push({time:now,value:lastTickerPrice-strike});gapHistory=gapHistory.filter(p=>now-p.time<=900000).slice(-60);
+}
+function drawThresholdOverlay(ctx,w,h,min,max){
+const strike=kalshiMarket&&isTradingMarket(kalshiMarket,Date.now())?verifiedStrike(kalshiMarket):null;
+if(strike===null||!records.length||min===null||max===null){$('thresholdChartNote').textContent='Threshold line unavailable until a valid active contract and candles are loaded.';return;}
+if(strike<min||strike>max){$('thresholdChartNote').textContent='Kalshi threshold $'+fmt(strike)+' is outside this candle chart’s visible price range; see tracker below.';return;}
+const yy=15+(max-strike)/(max-min)*(h-45);ctx.save();ctx.strokeStyle='#ffd188';ctx.lineWidth=1.6;ctx.setLineDash([7,5]);ctx.beginPath();ctx.moveTo(8,yy);ctx.lineTo(w-8,yy);ctx.stroke();ctx.setLineDash([]);
+ctx.fillStyle='#ffd188';ctx.font='bold 11px system-ui';ctx.textAlign='left';ctx.fillText('Kalshi threshold $'+fmt(strike),9,Math.min(h-10,Math.max(13,yy-7)));ctx.restore();
+$('thresholdChartNote').textContent='Dashed gold line: Kalshi’s published settlement threshold ($'+fmt(strike)+'). Kraken candles use a different reference source.';
+}
+function drawGapHistory(){const cv=$('gapChart'),ctx=cv.getContext('2d'),rect=cv.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,3);
+const w=rect.width,h=rect.height;cv.width=Math.max(1,Math.round(w*dpr));cv.height=Math.max(1,Math.round(h*dpr));ctx.scale(dpr,dpr);ctx.fillStyle='#0e0b1c';ctx.fillRect(0,0,w,h);
+const values=gapHistory.map(x=>x.value),low=Math.min(0,...values),high=Math.max(0,...values),pad=Math.max(2,(high-low)*0.2),min=low-pad,max=high+pad;
+const y=v=>13+(max-v)/(max-min)*(h-29),x=i=>18+(gapHistory.length<=1?.5:i/(gapHistory.length-1))*(w-36);
+ctx.strokeStyle='#5a496b';ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(8,y(0));ctx.lineTo(w-8,y(0));ctx.stroke();ctx.setLineDash([]);
+ctx.fillStyle='#cdbfe3';ctx.font='11px system-ui';ctx.textAlign='left';ctx.fillText('$0 threshold',10,Math.max(12,y(0)-6));
+if(!gapHistory.length){ctx.textAlign='center';ctx.fillStyle='#9e94b5';ctx.font='12px system-ui';ctx.fillText('Waiting for live Kraken price + Kalshi threshold',w/2,h/2+22);return;}
+if(gapHistory.length===1){ctx.fillStyle=values[0]>=0?'#68e5b8':'#ff879d';ctx.beginPath();ctx.arc(w/2,y(values[0]),4,0,Math.PI*2);ctx.fill();return;}
+for(let i=1;i<gapHistory.length;i++){ctx.strokeStyle=gapHistory[i].value>=0?'#68e5b8':'#ff879d';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x(i-1),y(values[i-1]));ctx.lineTo(x(i),y(values[i]));ctx.stroke();}
+}
+function renderTracker(){const m=kalshiMarket,threshold=m&&isTradingMarket(m,Date.now())?verifiedStrike(m):null;
+const tickerFresh=Number.isFinite(lastTickerPrice)&&Date.now()-lastTickerFetchedAt<TICKER_FRESH_MS;
+const quoteFresh=m&&Date.now()-kalshiFetchedAt<QUOTE_STALE_MS;
+const valid=threshold!==null&&tickerFresh&&quoteFresh;
+if(valid){addGapSample();const gap=lastTickerPrice-threshold;$('liveGap').textContent=(gap>=0?'+':'−')+'$'+fmt(Math.abs(gap));$('liveGap').className='big mono '+(gap>=0?'green':'red');
+$('gapDirection').textContent=gap>0?'KRAKEN ABOVE':gap<0?'KRAKEN BELOW':'AT THRESHOLD';
+$('liveReference').textContent='Kraken last trade $'+fmt(lastTickerPrice)+' · Kalshi threshold $'+fmt(threshold)+' · price fetched '+new Date(lastTickerFetchedAt).toLocaleTimeString()+' · NOT settlement price';
+}else{$('liveGap').textContent='—';$('liveGap').className='big mono amber';$('gapDirection').textContent='DATA NOT VERIFIED';
+$('liveReference').textContent=!m?'Waiting for active Kalshi contract.':threshold===null?'Kalshi has not published a verified numeric threshold.':!quoteFresh?'Kalshi market data is stale; tracking paused.':'Kraken last-trade price unavailable or stale; tracking paused.';}
+const first=gapHistory[0],last=gapHistory.at(-1);$('gapHistory').textContent=gapHistory.length?'Session samples: '+gapHistory.length+' · first '+new Date(first.time).toLocaleTimeString()+' · latest '+new Date(last.time).toLocaleTimeString():'No validated samples in this contract yet.';
+$('gapMove').textContent=gapHistory.length>=2?'Gap change since first sample: '+((last.value-first.value)>=0?'+':'−')+'$'+fmt(Math.abs(last.value-first.value)):'Gap change: —';
+drawGapHistory();}
+function renderDistance(){const m=kalshiMarket,threshold=m?verifiedStrike(m):null;const fresh=Number.isFinite(lastTickerPrice)&&Date.now()-lastTickerFetchedAt<TICKER_FRESH_MS;
+if(!m||!isTradingMarket(m,Date.now())||threshold===null||!fresh){$('kalshiDistance').textContent='—';return}
+const diff=lastTickerPrice-threshold;$('kalshiDistance').textContent=(diff>=0?'+':'−')+'$'+fmt(Math.abs(diff));} 
 function updateKalshiClock(){if(!kalshiMarket)return;
 const ageSecs=Math.max(0,Math.floor((Date.now()-kalshiFetchedAt)/1000));
 $('kalshiQuoteAge').textContent='Market quote snapshot received '+new Date(kalshiFetchedAt).toLocaleTimeString()+' · age '+ageSecs+'s · refresh target 20s';
@@ -73,7 +94,7 @@ $('kalshiStatus').textContent='KALSHI CONNECTED';$('kalshiStatus').className='bi
 }
 function updateKalshiMarket(m){const close=marketClose(m);if(!close||close<=Date.now()){clearKalshi('Returned contract already closed. Awaiting a new active market.');return}if(previousKalshiTicker&&previousKalshiTicker!==m.ticker){marketSwitches++;$('kalshiRollover').textContent='Contract switched automatically: '+previousKalshiTicker+' → '+m.ticker+' · switches since page opened: '+marketSwitches;}
 else if(!previousKalshiTicker){$('kalshiRollover').textContent='Tracking '+m.ticker+' · will attempt to switch when it closes.';}
-previousKalshiTicker=m.ticker;kalshiMarket=m;kalshiFetchedAt=Date.now();kalshiError=null;rolloverRequested=false;const yb=quoteCents(m,'yes','bid'),ya=quoteCents(m,'yes','ask'),nb=quoteCents(m,'no','bid'),na=quoteCents(m,'no','ask');$('kalshiTitle').textContent=m.title||m.subtitle||'Bitcoin 15-minute contract';$('kalshiTicker').textContent=m.ticker||'';
+if(gapTicker&&gapTicker!==m.ticker){gapHistory=[];gapTicker=m.ticker;}previousKalshiTicker=m.ticker;kalshiMarket=m;kalshiFetchedAt=Date.now();kalshiError=null;rolloverRequested=false;const yb=quoteCents(m,'yes','bid'),ya=quoteCents(m,'yes','ask'),nb=quoteCents(m,'no','bid'),na=quoteCents(m,'no','ask');$('kalshiTitle').textContent=m.title||m.subtitle||'Bitcoin 15-minute contract';$('kalshiTicker').textContent=m.ticker||'';
 $('yesQuote').textContent=cents(yb)+' / '+cents(ya);$('noQuote').textContent=cents(nb)+' / '+cents(na);
 const volume=numberValue(m.volume_fp??m.volume);
 $('kalshiVolume').textContent=volume===null?'—':volume.toLocaleString(undefined,{maximumFractionDigits:2});
@@ -88,8 +109,8 @@ if(nb!==null&&na!==null&&nb>na)warnings.push('NO market is crossed: bid exceeds 
 if(yb!==null&&ya!==null&&ya>=yb)warnings.push('YES spread '+cents(ya-yb)+'.');
 if(nb!==null&&na!==null&&na>=nb)warnings.push('NO spread '+cents(na-nb)+'.');
 if([yb,ya,nb,na].some(v=>v===null))warnings.push('One or more bid/ask quotes are missing.');if([yb,ya,nb,na].some(v=>v!==null&&(v<=0||v>=100)))warnings.push('Extreme 0¢/100¢ quotes may indicate a nearly settled or illiquid market; they are not guaranteed executable prices.');if(threshold===null)warnings.push('Kalshi did not provide a verified numeric settlement threshold. The Kraken price is NOT a substitute.');if((m.status||'active')!=='active'&&(m.status||'open')!=='open')warnings.push('Market status: '+String(m.status));
-if(ya!==null&&na!==null&&((ya<15&&$('direction').textContent==='TREND: UP')||(na<15&&$('direction').textContent==='TREND: DOWN')))warnings.unshift('MARKET/TREND DISAGREEMENT: Kalshi quotes conflict with the completed-candle trend. Neither predicts settlement.');$('kalshiQuoteWarning').textContent=warnings.length?warnings.join(' '):'Quotes received; neither prices nor technical checks predict settlement.';
-$('kalshiUpdated').textContent='Snapshot '+new Date(kalshiFetchedAt).toLocaleTimeString()+' · automatic refresh every 20 seconds';$('kalshiNotice').textContent=(m.rules_primary||'Consult the exact Kalshi contract settlement rules before acting.')+' Kalshi settlement uses its contract-defined reference, not necessarily Kraken spot.';updateKalshiClock();paperCapture()}
+$('kalshiQuoteWarning').textContent=warnings.length?warnings.join(' '):'Quotes received; check spread and liquidity before relying on them.';
+$('kalshiUpdated').textContent='Snapshot '+new Date(kalshiFetchedAt).toLocaleTimeString()+' · automatic refresh every 20 seconds';$('kalshiNotice').textContent=(m.rules_primary||'Consult the exact Kalshi contract settlement rules before acting.')+' Kalshi settlement uses its contract-defined reference, not necessarily Kraken spot.';updateKalshiClock();renderTracker();draw()}
 async function loadKalshi(){if(kalshiBusy)return;kalshiBusy=true;try{
 const data=await kalshiGet('/markets?series_ticker=KXBTC15M&status=open&limit=100');
 const list=Array.isArray(data.markets)?data.markets:[];const now=Date.now();
@@ -108,172 +129,5 @@ if(detail.market&&detail.market.ticker===m.ticker)m=detail.market;
 if(!isTradingMarket(m,Date.now())){clearKalshi('Selected contract changed status or closed before verification ('+String(m.status||'missing')+'). Retrying shortly.');return;}
 updateKalshiMarket(m);
 }catch(e){clearKalshi('Kalshi data update failed: '+e.message+'. Previous quotes have been cleared to avoid showing stale information.');$('kalshiDiagnostics').textContent='Market search request failed at '+new Date().toLocaleTimeString()+'.';}finally{kalshiBusy=false}}
-$('kalshiRefresh').onclick=loadKalshi;loadKalshi();setInterval(loadKalshi,20000);setInterval(updateKalshiClock,1000);setInterval(()=>{if(lastSpotFetchedAt&&Date.now()-lastSpotFetchedAt>=45000){lastSpotPrice=null;renderDistance();$('spotAge').textContent='Kraken ticker stale — awaiting refresh';$('spotPrice').textContent='—';}},1000);
-
-// Local paper-observation log: no orders, no forecast or implied trading edge.
-const PAPER_KEY='kalshi-paper-v1';
-let paperLog=[];
-try{const saved=JSON.parse(localStorage.getItem(PAPER_KEY)||'[]');if(Array.isArray(saved))paperLog=saved.filter(x=>x&&typeof x.ticker==='string').slice(-300)}catch(e){}
-function paperSave(){try{localStorage.setItem(PAPER_KEY,JSON.stringify(paperLog))}catch(e){$('paperStatus').textContent='Browser storage is unavailable. Export any observations before leaving.'}paperRender()}
-function paperRender(){
- const done=paperLog.filter(x=>x.result==='yes'||x.result==='no');const evaluated=done.filter(x=>x.trend==='UP'||x.trend==='DOWN');const match=evaluated.filter(x=>x.trend===(x.result==='yes'?'UP':'DOWN')).length;
- $('paperTotal').textContent=paperLog.length.toString();$('paperSettled').textContent=done.length+' / '+(paperLog.length-done.length);
- $('paperAccuracy').textContent=evaluated.length?fmt(100*match/evaluated.length,1)+'% ('+match+'/'+evaluated.length+')':'—';
- const latest=paperLog.slice(-15).reverse();$('paperRows').innerHTML='';
- if(!latest.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=8;td.textContent='No snapshots yet';tr.appendChild(td);$('paperRows').appendChild(tr)}
- for(const x of latest){const tr=document.createElement('tr');const outcome=x.result||'Pending';const v=[new Date(x.at).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}),x.ticker,x.trend,x.score+'/4',cents(x.yesAsk),cents(x.noAsk),outcome,x.result?((x.trend===(x.result==='yes'?'UP':'DOWN'))?'YES':'NO'):'—'];for(const z of v){const td=document.createElement('td');td.textContent=String(z);tr.appendChild(td)}$('paperRows').appendChild(tr)}
-}
-function paperCapture(){
- if(!kalshiMarket||!kalshiFetchedAt||Date.now()-kalshiFetchedAt>45000||!records.length)return;
- const m=kalshiMarket,remaining=marketClose(m)-Date.now();if(remaining<120000||remaining>300000)return;
- if(paperLog.some(x=>x.ticker===m.ticker))return;
- const s=analyze(records);if(!s.fresh||!['UP','DOWN'].includes(s.trend)||timeframe!==15)return;
- const ya=quoteCents(m,'yes','ask'),na=quoteCents(m,'no','ask');if(ya===null||na===null)return;
- paperLog.push({at:new Date().toISOString(),ticker:m.ticker,expires:new Date(marketClose(m)).toISOString(),trend:s.trend,score:s.score,rsi:s.r,ema9:s.a,ema21:s.b,volumeRatio:s.rv,yesAsk:ya,noAsk:na,threshold:verifiedStrike(m),krakenTicker:Number.isFinite(lastSpotPrice)&&Date.now()-lastSpotFetchedAt<45000?lastSpotPrice:null,result:null});
- if(paperLog.length>300)paperLog=paperLog.slice(-300);paperSave();$('paperStatus').textContent='Snapshot recorded. Awaiting official settlement.';
-}
-let paperBusy=false;
-async function paperCheckOutcomes(){
- if(paperBusy)return;paperBusy=true;
- const todo=paperLog.filter(x=>!x.result&&Date.parse(x.expires)<Date.now()-60000).slice(0,8);let resolved=0,failed=0;
- try{for(const x of todo){try{const data=await kalshiGet('/markets/'+encodeURIComponent(x.ticker));const m=data.market||data;const result=String(m.result||'').toLowerCase();if(m.ticker===x.ticker&&(result==='yes'||result==='no')){x.result=result;x.settledAt=new Date().toISOString();resolved++}}catch(e){failed++}}
- if(resolved)paperSave();$('paperLast').textContent=new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
- $('paperStatus').textContent=`Checked ${todo.length} past contract(s); ${resolved} newly settled, ${failed} lookup failure(s). Missing results stay pending. ${paperLog.length?'':'No snapshots recorded yet.'}`;
- }finally{paperBusy=false;paperRender()}
-}
-$('paperResolve').onclick=paperCheckOutcomes;
-$('paperExport').onclick=()=>{
- const cols=['at','ticker','expires','trend','score','rsi','ema9','ema21','volumeRatio','yesAsk','noAsk','threshold','krakenTicker','result','settledAt'];
- const csv=[cols.join(','),...paperLog.map(x=>cols.map(k=>'"'+String(x[k]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n');
- const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='kalshi-paper-observations-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
-};
-paperRender();setInterval(paperCheckOutcomes,60000);setInterval(paperCapture,20000);paperCheckOutcomes();
-</script>
-
-<section class="card" id="autoPaperPanel"
-  style="margin:20px 0;padding:20px">
-  <h2>Automatic Paper Testing</h2>
-  <p>Historical BTC 15-minute contract observations</p>
-
-  <div id="autoPaperStatus">
-    Loading saved results...
-  </div>
-
-  <div id="autoPaperStats"
-    style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
-  </div>
-
-  <h3>Recent observations</h3>
-  <div id="autoPaperHistory"
-    style="overflow-x:auto">
-  </div>
-
-  <p style="font-size:12px;opacity:.75">
-    Trend-match statistics are not win probabilities.
-    No real trades are placed.
-  </p>
-</section>
-
-<script>
-async function loadAutoPaper() {
-  const status = document.getElementById('autoPaperStatus');
-  const stats = document.getElementById('autoPaperStats');
-  const history = document.getElementById('autoPaperHistory');
-
-  try {
-    const response = await fetch(
-      '/.netlify/functions/paper-results',
-      { cache: 'no-store' }
-    );
-
-    if (!response.ok) throw Error('Results unavailable');
-
-    const data = await response.json();
-    const s = data.summary;
-    const records = data.records || [];
-
-    status.textContent = 'Saved observations loaded';
-
-    stats.replaceChildren();
-
-    const metrics = [
-      ['Total tests', s.total],
-      ['Settled', s.settled],
-      ['Pending', s.pending],
-      ['Trend matches', s.matches],
-      ['Match rate',
-        s.matchRate == null
-          ? '—'
-          : s.matchRate.toFixed(1) + '%']
-    ];
-
-    for (const [label, value] of metrics) {
-      const card = document.createElement('div');
-      card.style.cssText =
-        'border:1px solid #76528d;border-radius:12px;padding:12px';
-
-      const heading = document.createElement('div');
-      heading.textContent = label;
-      heading.style.opacity = '.75';
-
-      const number = document.createElement('strong');
-      number.textContent = String(value);
-      number.style.fontSize = '24px';
-
-      card.append(heading, number);
-      stats.append(card);
-    }
-
-    history.replaceChildren();
-
-    const table = document.createElement('table');
-    table.style.cssText = 'width:100%;font-size:13px';
-
-    const header = document.createElement('tr');
-
-    for (const name of ['Time','Trend','Score','Result']) {
-      const th = document.createElement('th');
-      th.textContent = name;
-      th.style.padding = '8px';
-      header.append(th);
-    }
-
-    table.append(header);
-
-    for (const r of records.slice(0, 15)) {
-      const tr = document.createElement('tr');
-      const values = [
-        r.capturedAt
-          ? new Date(r.capturedAt).toLocaleString()
-          : '—',
-        r.trend || '—',
-        r.score == null ? '—' : r.score + '/4',
-        r.result || 'Pending'
-      ];
-
-      for (const value of values) {
-        const td = document.createElement('td');
-        td.textContent = String(value);
-        td.style.padding = '8px';
-        tr.append(td);
-      }
-
-      table.append(tr);
-    }
-
-    history.append(table);
-
-    if (data.truncated) {
-      status.textContent =
-        'Showing partial history (record limit reached)';
-    }
-  } catch (error) {
-    status.textContent = 'Unable to load saved results';
-  }
-}
-
-loadAutoPaper();
-setInterval(loadAutoPaper, 60000);
-</script>
-
-</body></html>
+$('kalshiRefresh').onclick=()=>{loadKalshi();loadTicker()};loadKalshi();loadTicker();setInterval(loadKalshi,20000);setInterval(loadTicker,20000);setInterval(()=>{updateKalshiClock();renderDistance();renderTracker();},5000);window.addEventListener('resize',drawGapHistory);load();setInterval(load,60000);
+</script></body></html>
