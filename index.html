@@ -47,34 +47,14 @@ canvas{background:#070e18;border:1px solid #263a4b;border-radius:5px}.chart canv
  .chart canvas#chart{height:350px}
 }
 
-/* Version 11: contract decision worksheet; read-only market snapshots. */
-.decision-panel{margin:15px 0 18px;padding:14px;border:1px solid #2e4957;background:#081721;border-radius:7px;box-shadow:inset 3px 0 0 #27cdb9}
-.decision-panel .dec-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
-.decision-panel h3{margin:0;font-size:16px;letter-spacing:.035em;color:#e5f7f7}
-.decision-status{font-size:11px;color:#a7bbc7;border:1px solid #355062;padding:5px 8px;border-radius:4px}
-.decision-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:11px 0}
-.decision-side{padding:12px;background:#101f2c;border:1px solid #304656;border-radius:5px;min-width:0}
-.decision-side .side-title{font-weight:850;color:#e6f4fc;letter-spacing:.1em;font-size:13px}
-.decision-side .dec-ask{font-size:23px;line-height:1.3;font-weight:850;color:#fff;margin:4px 0;white-space:nowrap;font-variant-numeric:tabular-nums}
-.decision-side dl{display:grid;grid-template-columns:minmax(0,1.1fr) auto;gap:6px;margin:9px 0 0;font-size:11px}
-.decision-side dt{color:#98b1bf}.decision-side dd{color:#e2eff4;font-weight:700;text-align:right;margin:0;font-variant-numeric:tabular-nums}
-.decision-info{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0}.decision-info span{background:#132432;border:1px solid #304a59;border-radius:4px;padding:6px 8px;color:#bdd4df;font-size:11px}
-.decision-foot{margin:10px 0 0;font-size:11px;line-height:1.6;color:#95aebb}
-.decision-error{color:#f6c786;font-size:12px;line-height:1.6;margin:8px 0}
-@media(max-width:370px){.decision-side{padding:9px}.decision-side .dec-ask{font-size:20px}.decision-side dl{font-size:10px}}
+/* Version 11 fix: independently visible, quote-validated decision panel */
+.decision{grid-column:1/-1}.decision-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:13px 0}.decision-side{border:1px solid #2a4555;background:#0b1925;border-radius:7px;padding:13px;min-width:0}.decision-side .decision-heading{color:#75e2d1;font-size:12px;font-weight:850;letter-spacing:.12em}.decision-side.no .decision-heading{color:#ff9daf}.decision-side dl{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:8px 4px;margin:14px 0 2px;font-size:12px}.decision-side dt{color:#99adbd}.decision-side dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;color:#e6f2ff;font-weight:750;overflow-wrap:anywhere}.decision .smallprint{font-size:11px;line-height:1.6;color:#91a2b3}.decision-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.decision .notice{margin-top:12px}
+@media(max-width:719px){.decision{order:3}.signal{order:4}.details{order:5}.performance{order:6}.risk{order:7}.decision-grid{gap:7px}.decision-side{padding:10px 8px}.decision-side dl{font-size:10px;gap:9px 4px}.decision-side .decision-heading{font-size:11px}}
 </style></head><body><header><div class="head"><div><div class="terminal-kicker"><span class="dot"></span> LIVE RESEARCH TERMINAL · BTC / USD</div><div class="brand">KALSHI COMMAND CENTER</div><div class="sub">BTC · 15-minute market research · read-only</div></div><div class="terminal-nav"><span>MARKET MONITOR</span><span>SPOT + CONTRACTS</span></div><span class="status" id="globalStatus">CONNECTING</span></div></header><main class="wrap">
 <section class="card signal"><div class="label">Directional analysis</div><div class="big amber" id="direction">UNAVAILABLE</div><div class="pill" id="action">WAIT — awaiting verified data</div><div class="line"></div><div class="label">Technical confirmations</div><div class="big purple" id="score">— / 4</div><div class="meter"><div id="meter"></div></div><div class="muted">Technical checks are not a probability of profit. No trade recommendation is made.</div></section>
-<section class="card chart"><div class="row"><div><div class="label">Bitcoin spot chart · Kraken</div><div class="big mono" id="spotPrice">—</div></div><div class="pill" id="freshness">DATA UNAVAILABLE</div></div><div class="chartbar"><button id="btn15">15m</button><button class="active" id="btn5">5m</button><button id="refresh">↻ Refresh</button></div><div class="chart-telemetry" aria-live="off"><div class="telemetry-cell"><div class="label">Kraken latest trade · reference</div><strong id="chartLivePrice">—</strong><div class="muted" id="chartLiveAge">Waiting for verified price</div></div><div class="telemetry-cell"><div class="label">Kalshi contract closes in</div><strong id="chartExpiry">—</strong><div class="muted" id="chartExpiryDetail">Waiting for verified active contract</div></div></div><div class="chart-target-tag"><span class="target-line"></span><span id="chartTargetValue">Kalshi threshold: awaiting active market</span><span class="target-note">Settlement reference · not Kraken</span></div><canvas id="chart" aria-label="Bitcoin candlestick price chart with EMA overlays"></canvas><div class="chart-meta"><span><b class="green">━</b> EMA 9</span><span><b class="purple">━</b> EMA 21</span><span>Completed candles only</span><span class="amber">- - Kalshi threshold (if in chart range)</span></div><p class="muted" id="chartMarkerLegend">Teal marker = Kraken last trade, not a completed candle or Kalshi settlement price.</p><p class="muted" id="thresholdChartNote">Waiting for an active contract threshold.</p><p class="muted" id="updated">Waiting for market data.</p><section class="decision-panel" aria-label="Kalshi contract price and break-even worksheet">
- <div class="dec-header"><h3>CONTRACT PRICE CHECK</h3><span class="decision-status" id="decStatus">WAITING FOR VERIFIED QUOTES</span></div>
- <div class="decision-info"><span id="decTime">Closes in —</span><span id="decAge">Quote age —</span><span id="decContract">Contract —</span></div>
- <div class="decision-grid">
-  <div class="decision-side"><div class="side-title" style="color:#30e0b8">YES</div><div class="dec-ask" id="decYesAsk">—</div><dl><dt>Bid / spread</dt><dd id="decYesSpread">—</dd><dt>Est. taker fee*</dt><dd id="decYesFee">—</dd><dt>Break-even†</dt><dd id="decYesBE">—</dd><dt>Net if correct*</dt><dd id="decYesWin">—</dd><dt>Max loss*</dt><dd id="decYesLoss">—</dd></dl></div>
-  <div class="decision-side"><div class="side-title" style="color:#ff8b9c">NO</div><div class="dec-ask" id="decNoAsk">—</div><dl><dt>Bid / spread</dt><dd id="decNoSpread">—</dd><dt>Est. taker fee*</dt><dd id="decNoFee">—</dd><dt>Break-even†</dt><dd id="decNoBE">—</dd><dt>Net if correct*</dt><dd id="decNoWin">—</dd><dt>Max loss*</dt><dd id="decNoLoss">—</dd></dl></div>
- </div>
- <p class="decision-error" id="decWarning">Waiting for a verified active contract and recent YES/NO quotes.</p>
- <p class="decision-foot">*Illustrative <strong>one-contract marketable buy</strong> using the general Kalshi taker-fee formula (7% × price × (1 − price), rounded up to $0.01 per order). Some series have different fees or multipliers. These are <strong>not verified fees or executable quotes</strong>; Kalshi's order preview controls. Assumes $1 payout if correct, $0 if wrong, holding to settlement, no early exit. †Break-even = estimated total buy cost ÷ $1 payout. There is no independently validated win-probability model here; no BUY/SELL advice.</p>
-</section><div class="threshold-panel" aria-label="Threshold movement tracker"><div class="row"><div><div class="label">BTC versus Kalshi threshold · live reference</div><div class="big mono" id="liveGap" style="font-size:30px">—</div></div><div class="pill" id="gapDirection">AWAITING DATA</div></div><p class="muted" id="liveReference">Awaiting Kraken's last-traded price and an active Kalshi settlement threshold.</p><canvas id="gapChart" aria-label="History of Kraken price minus Kalshi contract threshold since this page was opened"></canvas><div class="row"><span class="muted" id="gapHistory">History starts when both live feeds are available.</span><span class="muted" id="gapMove">Change: —</span></div><p class="muted">Green = Kraken last trade above the threshold; pink = below. This is NOT Kalshi's CF Benchmarks settlement feed. History is recorded only while this page stays open, not a backtest.</p></div></section>
+<section class="card chart"><div class="row"><div><div class="label">Bitcoin spot chart · Kraken</div><div class="big mono" id="spotPrice">—</div></div><div class="pill" id="freshness">DATA UNAVAILABLE</div></div><div class="chartbar"><button id="btn15">15m</button><button class="active" id="btn5">5m</button><button id="refresh">↻ Refresh</button></div><div class="chart-telemetry" aria-live="off"><div class="telemetry-cell"><div class="label">Kraken latest trade · reference</div><strong id="chartLivePrice">—</strong><div class="muted" id="chartLiveAge">Waiting for verified price</div></div><div class="telemetry-cell"><div class="label">Kalshi contract closes in</div><strong id="chartExpiry">—</strong><div class="muted" id="chartExpiryDetail">Waiting for verified active contract</div></div></div><div class="chart-target-tag"><span class="target-line"></span><span id="chartTargetValue">Kalshi threshold: awaiting active market</span><span class="target-note">Settlement reference · not Kraken</span></div><canvas id="chart" aria-label="Bitcoin candlestick price chart with EMA overlays"></canvas><div class="chart-meta"><span><b class="green">━</b> EMA 9</span><span><b class="purple">━</b> EMA 21</span><span>Completed candles only</span><span class="amber">- - Kalshi threshold (if in chart range)</span></div><p class="muted" id="chartMarkerLegend">Teal marker = Kraken last trade, not a completed candle or Kalshi settlement price.</p><p class="muted" id="thresholdChartNote">Waiting for an active contract threshold.</p><p class="muted" id="updated">Waiting for market data.</p><div class="threshold-panel" aria-label="Threshold movement tracker"><div class="row"><div><div class="label">BTC versus Kalshi threshold · live reference</div><div class="big mono" id="liveGap" style="font-size:30px">—</div></div><div class="pill" id="gapDirection">AWAITING DATA</div></div><p class="muted" id="liveReference">Awaiting Kraken's last-traded price and an active Kalshi settlement threshold.</p><canvas id="gapChart" aria-label="History of Kraken price minus Kalshi contract threshold since this page was opened"></canvas><div class="row"><span class="muted" id="gapHistory">History starts when both live feeds are available.</span><span class="muted" id="gapMove">Change: —</span></div><p class="muted">Green = Kraken last trade above the threshold; pink = below. This is NOT Kalshi's CF Benchmarks settlement feed. History is recorded only while this page stays open, not a backtest.</p></div></section>
 <section class="card market"><div class="label">Kalshi · BTC 15-minute contract</div><div class="big amber" id="kalshiStatus" style="font-size:28px">CONNECTING</div><p class="muted" id="kalshiTitle">Looking for an active Kalshi Bitcoin 15-minute contract.</p><p class="muted mono" id="kalshiTicker"></p><div class="metrics"><div class="metric"><div class="label">YES bid / ask</div><strong id="yesQuote">— / —</strong></div><div class="metric"><div class="label">NO bid / ask</div><strong id="noQuote">— / —</strong></div><div class="metric"><div class="label">Volume · contracts traded</div><strong id="kalshiVolume">—</strong></div><div class="metric"><div class="label">Time to expiry</div><strong id="kalshiCountdown">—</strong></div><div class="metric"><div class="label">Kalshi settlement threshold</div><strong id="kalshiStrike">—</strong></div><div class="metric"><div class="label">Kraken last trade vs threshold</div><strong id="kalshiDistance">—</strong></div></div><p class="muted">Kraken last-trade reference is separate from Kalshi’s CF Benchmarks settlement-price source.</p><p class="muted" id="kalshiQuoteAge">Quote age: awaiting first response</p><p class="muted" id="kalshiRollover">Automatic market selection enabled.</p><p class="muted" id="kalshiDiagnostics">Market search: awaiting API response.</p><p class="muted" id="kalshiTradeMath">Entry cost and payout example will appear when an ask is available.</p><p class="muted warning" id="kalshiQuoteWarning">Waiting for a verified quote.</p><div class="line"></div><div class="notice" id="kalshiNotice">Loading public Kalshi market data. No contract odds or payout will be fabricated.</div><p class="muted" id="kalshiUpdated"></p><button id="kalshiRefresh" type="button">↻ Refresh Kalshi</button></section>
+<section class="card decision" id="contractPriceCheck" aria-label="Contract Price Check"><div class="decision-head"><div><div class="label">Contract Price Check · Version 11</div><h2 style="font-size:20px;margin:7px 0">YES vs NO · cost and break-even</h2></div><span class="pill" id="decisionStatus">WAITING FOR QUOTES</span></div><p class="muted" id="decisionMeta">Awaiting an active contract and recent prices.</p><div class="decision-grid"><div class="decision-side"><div class="decision-heading">YES CONTRACT</div><dl><dt>Bid / ask</dt><dd id="decisionYesQuote">—</dd><dt>Spread</dt><dd id="decisionYesSpread">—</dd><dt>Buy cost</dt><dd id="decisionYesCost">—</dd><dt>Estimated fee</dt><dd id="decisionYesFee">—</dd><dt>Break-even chance*</dt><dd id="decisionYesBreak">—</dd><dt>Net if correct*</dt><dd id="decisionYesWin">—</dd><dt>Max loss*</dt><dd id="decisionYesLoss">—</dd></dl></div><div class="decision-side no"><div class="decision-heading">NO CONTRACT</div><dl><dt>Bid / ask</dt><dd id="decisionNoQuote">—</dd><dt>Spread</dt><dd id="decisionNoSpread">—</dd><dt>Buy cost</dt><dd id="decisionNoCost">—</dd><dt>Estimated fee</dt><dd id="decisionNoFee">—</dd><dt>Break-even chance*</dt><dd id="decisionNoBreak">—</dd><dt>Net if correct*</dt><dd id="decisionNoWin">—</dd><dt>Max loss*</dt><dd id="decisionNoLoss">—</dd></dl></div></div><p class="smallprint">*Illustrative purchase of one contract at the current ask, held to settlement. Fee uses an example standard taker-fee formula (rounded up to the nearest cent); actual Kalshi fees can vary by market, order type, and rounding. Break-even chance = total purchase cost / $1 settlement payout. These are <strong>not</strong> estimates of actual winning probabilities, guaranteed fills, or trade recommendations. Confirm costs in the Kalshi order preview.</p><div class="notice" id="decisionWarning">No current verified contract quote. Calculations are hidden until available.</div></section>
 <section class="card details"><div class="label">Signal evidence</div><div id="checks"><p class="muted">Indicator checks appear when enough verified candles are available.</p></div><div class="line"></div><div class="muted" id="rsi">RSI(14): —</div><div class="muted" id="volume">Relative volume: —</div><div class="muted" id="ema">EMA 9 / EMA 21: —</div></section>
 <section class="card performance" id="performance"><div class="row"><div><div class="label">15-minute signal performance · observed only</div><h2 style="font-size:20px;margin:9px 0">Signal history & official Kalshi outcomes</h2></div><span class="pill" id="perfState">LOCAL LOG · NO TRADES</span></div>
 <p class="muted">Logs one 4/4 UP or DOWN signal per Kalshi contract while this page is open. Official outcomes are fetched from Kalshi after expiration. No outcome is inferred from Kraken. Signals are observations, not trades, and are never backfilled.</p>
@@ -110,7 +90,7 @@ function marketClose(m){const raw=m.close_time||m.expiration_time||m.expected_ex
 function marketOpen(m){const t=Date.parse(m.open_time||'');return Number.isFinite(t)?t:null}
 function readableTime(t){return Number.isFinite(t)?new Date(t).toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):'unknown'}
 function isTradingMarket(m,now){return !!(m&&m.ticker&&String(m.status).toLowerCase()==='active'&&marketClose(m)!==null&&marketClose(m)>now+1000&&(marketOpen(m)===null||marketOpen(m)<=now))}
-function clearKalshi(message){kalshiMarket=null;kalshiFetchedAt=0;kalshiError=message;$('kalshiQuoteAge').textContent='Quote age: unavailable';$('kalshiTradeMath').textContent='Entry price and payout unavailable.';$('kalshiStatus').textContent='DATA UNAVAILABLE';$('kalshiStatus').className='big amber';$('kalshiTitle').textContent='No verified active Kalshi contract';$('kalshiTicker').textContent='';for(const id of ['yesQuote','noQuote','kalshiVolume','kalshiCountdown','kalshiStrike','kalshiDistance'])$(id).textContent='—';$('kalshiQuoteWarning').textContent='Quotes unavailable — do not use previous prices.';$('kalshiNotice').textContent=message;renderTracker();draw();$('kalshiUpdated').textContent='No current verified Kalshi quote.';renderDecision()}
+function clearKalshi(message){kalshiMarket=null;kalshiFetchedAt=0;kalshiError=message;$('kalshiQuoteAge').textContent='Quote age: unavailable';$('kalshiTradeMath').textContent='Entry price and payout unavailable.';$('kalshiStatus').textContent='DATA UNAVAILABLE';$('kalshiStatus').className='big amber';$('kalshiTitle').textContent='No verified active Kalshi contract';$('kalshiTicker').textContent='';for(const id of ['yesQuote','noQuote','kalshiVolume','kalshiCountdown','kalshiStrike','kalshiDistance'])$(id).textContent='—';$('kalshiQuoteWarning').textContent='Quotes unavailable — do not use previous prices.';$('kalshiNotice').textContent=message;renderTracker();renderContractPriceCheck();draw();$('kalshiUpdated').textContent='No current verified Kalshi quote.'}
 async function kalshiGet(path){const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),10000);try{const response=await fetch(KALSHI_BASE+path,{signal:ctrl.signal,cache:'no-store'});if(!response.ok)throw Error('HTTP '+response.status);return await response.json()}finally{clearTimeout(timer)}}
 
 // Live reference uses Kraken's most recent trade, not a completed OHLC candle or Kalshi's settlement feed.
@@ -187,51 +167,7 @@ drawGapHistory();}
 function renderDistance(){const m=kalshiMarket,threshold=m?verifiedStrike(m):null;const fresh=Number.isFinite(lastTickerPrice)&&Date.now()-lastTickerFetchedAt<TICKER_FRESH_MS;
 if(!m||!isTradingMarket(m,Date.now())||threshold===null||!fresh){$('kalshiDistance').textContent='—';return}
 const diff=lastTickerPrice-threshold;$('kalshiDistance').textContent=(diff>=0?'+':'−')+'$'+fmt(Math.abs(diff));} 
-
-// Version 11 — display-only, one-contract cost worksheet. Never use stale or expired quotes.
-const DEC_IDS=['decYesAsk','decNoAsk','decYesSpread','decNoSpread','decYesFee','decNoFee','decYesBE','decNoBE','decYesWin','decNoWin','decYesLoss','decNoLoss'];
-function resetDecision(reason){
- for(const id of DEC_IDS)$(id).textContent='—';
- $('decStatus').textContent='NO VERIFIED LIVE QUOTE';
- $('decTime').textContent='Closes in —';$('decAge').textContent='Quote age —';$('decContract').textContent='Contract —';
- $('decWarning').textContent=reason||'Awaiting a verified active Kalshi contract and recent quotes.';
-}
-function decisionSide(side,ask,bid){
- const prefix=side==='yes'?'decYes':'decNo';
- $(prefix+'Ask').textContent=ask!==null?cents(ask)+' ASK':'—';
- $(prefix+'Spread').textContent=(bid!==null&&ask!==null)?cents(bid)+' / '+(ask>=bid?cents(ask-bid):'CROSSED'):'—';
- if(ask===null||!(ask>0&&ask<100)||(bid!==null&&bid>ask))return false;
- const price=ask/100;
- // Generic one-contract taker estimate, round up to nearest cent per order.
- const fee=Math.ceil((0.07*price*(1-price)-1e-10)*100)/100;
- const total=price+fee;
- $(prefix+'Fee').textContent='$'+fee.toFixed(2);
- $(prefix+'BE').textContent=(total*100).toFixed(1)+'%';
- $(prefix+'Win').textContent='$'+(1-total).toFixed(2);
- $(prefix+'Loss').textContent='$'+total.toFixed(2);
- return true;
-}
-function renderDecision(){
- const m=kalshiMarket,now=Date.now();
- if(!m||!isTradingMarket(m,now)||!kalshiFetchedAt||now-kalshiFetchedAt>QUOTE_STALE_MS){
-   resetDecision(!m?'No verified active Kalshi contract.':'Quote missing, expired, or older than 45 seconds. Figures hidden.');return;
- }
- const close=marketClose(m),secs=Math.max(0,Math.ceil((close-now)/1000));
- if(secs===0){resetDecision('Contract closed. Figures hidden until a verified replacement is selected.');return;}
- const ya=quoteCents(m,'yes','ask'),yb=quoteCents(m,'yes','bid'),na=quoteCents(m,'no','ask'),nb=quoteCents(m,'no','bid');
- $('decTime').textContent='Closes in '+Math.floor(secs/60)+'m '+String(secs%60).padStart(2,'0')+'s';
- $('decAge').textContent='Snapshot '+Math.floor((now-kalshiFetchedAt)/1000)+'s old';
- $('decContract').textContent=m.ticker;
- const yesOk=decisionSide('yes',ya,yb),noOk=decisionSide('no',na,nb);
- $('decStatus').textContent=yesOk&&noOk?'LIVE SNAPSHOT · ESTIMATES':'PARTIAL QUOTES';
- const warning=[];
- if(!yesOk||!noOk)warning.push('Some quotes are missing, crossed or at 0¢/100¢. Estimates are withheld for those sides.');
- if(ya!==null&&yb!==null&&ya-yb>=10||na!==null&&nb!==null&&na-nb>=10)warning.push('Wide bid/ask spread: actual entry and early-exit costs can be substantial.');
- warning.push('Displayed asking prices are snapshots, not guaranteed fills. Compare actual fees and cost in the Kalshi order preview.');
- $('decWarning').textContent=warning.join(' ');
-}
-
-function updateKalshiClock(){renderDecision();if(!kalshiMarket)return;
+function updateKalshiClock(){if(!kalshiMarket)return;
 const ageSecs=Math.max(0,Math.floor((Date.now()-kalshiFetchedAt)/1000));
 $('kalshiQuoteAge').textContent='Market quote snapshot received '+new Date(kalshiFetchedAt).toLocaleTimeString()+' · age '+ageSecs+'s · refresh target 20s';
 const remaining=(marketClose(kalshiMarket)||0)-Date.now();const secs=Math.max(0,Math.ceil(remaining/1000));$('kalshiCountdown').textContent=secs?Math.floor(secs/60)+'m '+String(secs%60).padStart(2,'0')+'s':'CLOSED';const stale=Date.now()-kalshiFetchedAt>QUOTE_STALE_MS;
@@ -257,7 +193,7 @@ if(yb!==null&&ya!==null&&ya>=yb)warnings.push('YES spread '+cents(ya-yb)+'.');
 if(nb!==null&&na!==null&&na>=nb)warnings.push('NO spread '+cents(na-nb)+'.');
 if([yb,ya,nb,na].some(v=>v===null))warnings.push('One or more bid/ask quotes are missing.');if([yb,ya,nb,na].some(v=>v!==null&&(v<=0||v>=100)))warnings.push('Extreme 0¢/100¢ quotes may indicate a nearly settled or illiquid market; they are not guaranteed executable prices.');if(threshold===null)warnings.push('Kalshi did not provide a verified numeric settlement threshold. The Kraken price is NOT a substitute.');if((m.status||'active')!=='active'&&(m.status||'open')!=='open')warnings.push('Market status: '+String(m.status));
 $('kalshiQuoteWarning').textContent=warnings.length?warnings.join(' '):'Quotes received; check spread and liquidity before relying on them.';
-$('kalshiUpdated').textContent='Snapshot '+new Date(kalshiFetchedAt).toLocaleTimeString()+' · automatic refresh every 20 seconds';$('kalshiNotice').textContent=(m.rules_primary||'Consult the exact Kalshi contract settlement rules before acting.')+' Kalshi settlement uses its contract-defined reference, not necessarily Kraken spot.';updateKalshiClock();renderTracker();draw();captureSignal()}
+$('kalshiUpdated').textContent='Snapshot '+new Date(kalshiFetchedAt).toLocaleTimeString()+' · automatic refresh every 20 seconds';$('kalshiNotice').textContent=(m.rules_primary||'Consult the exact Kalshi contract settlement rules before acting.')+' Kalshi settlement uses its contract-defined reference, not necessarily Kraken spot.';updateKalshiClock();renderTracker();renderContractPriceCheck();draw();captureSignal()}
 async function loadKalshi(){if(kalshiBusy)return;kalshiBusy=true;try{
 const data=await kalshiGet('/markets?series_ticker=KXBTC15M&status=open&limit=100');
 const list=Array.isArray(data.markets)?data.markets:[];const now=Date.now();
@@ -331,5 +267,33 @@ const url=URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/csv;charse
 $('perfClear').onclick=()=>{if(confirm('Delete all locally saved signal observations? Export a CSV first if you want a backup.')){perfEntries=[];savePerf();renderPerf();$('perfCheck').textContent='Local observations cleared.'}};
 renderPerf();setInterval(verifyPerf,120000);setTimeout(verifyPerf,5000);
 
-$('kalshiRefresh').onclick=()=>{loadKalshi();loadTicker()};resetDecision();loadKalshi();loadTicker();setInterval(loadKalshi,20000);setInterval(loadTicker,20000);setInterval(()=>{updateKalshiClock();renderDistance();renderTracker();draw();},5000);window.addEventListener('resize',drawGapHistory);load();loadSignalCandles();setInterval(load,60000);setInterval(loadSignalCandles,60000);
+
+// Version 11: fee-adjusted price comparison, shown only for fresh and verified quotes.
+function renderContractPriceCheck(){
+ const m=kalshiMarket,now=Date.now(),active=!!(m&&isTradingMarket(m,now)),fresh=active&&kalshiFetchedAt>0&&now-kalshiFetchedAt<=QUOTE_STALE_MS;
+ const blank=()=>{for(const side of ['Yes','No'])for(const field of ['Quote','Spread','Cost','Fee','Break','Win','Loss'])$('decision'+side+field).textContent='—';};
+ if(!fresh){blank();$('decisionStatus').textContent=active?'STALE QUOTES':'NOT AVAILABLE';$('decisionMeta').textContent=active?('Quote older than '+Math.round(QUOTE_STALE_MS/1000)+' seconds. Waiting for a fresh snapshot.'):'No verified active Kalshi contract.';$('decisionWarning').textContent='No current verified quote: calculations are hidden. Never reuse a prior contract price.';return;}
+ const bidAsk={Yes:[quoteCents(m,'yes','bid'),quoteCents(m,'yes','ask')],No:[quoteCents(m,'no','bid'),quoteCents(m,'no','ask')]};
+ let valid=0;
+ for(const side of ['Yes','No']){
+  const [bid,ask]=bidAsk[side],qOk=Number.isFinite(bid)&&Number.isFinite(ask)&&bid>=0&&ask>0&&ask<100&&bid<=ask;
+  $('decision'+side+'Quote').textContent=Number.isFinite(bid)&&Number.isFinite(ask)?cents(bid)+' / '+cents(ask):'—';
+  $('decision'+side+'Spread').textContent=qOk?cents(ask-bid):'—';
+  if(!qOk){for(const field of ['Cost','Fee','Break','Win','Loss'])$('decision'+side+field).textContent='—';continue;}
+  // Illustrative generic taker fee: ceil(0.07 * price * (1-price) dollars * 100) cents.
+  const p=ask/100,feeCents=Math.ceil(7*p*(1-p)-1e-9); // fee in cents, rounded up to 1 cent
+  const total=ask+feeCents;
+  $('decision'+side+'Cost').textContent=cents(ask);
+  $('decision'+side+'Fee').textContent=cents(feeCents);
+  $('decision'+side+'Break').textContent=total.toFixed(2)+'%';
+  $('decision'+side+'Win').textContent=(100-total>=0?'+':'−')+'$'+fmt(Math.abs(100-total)/100);
+  $('decision'+side+'Loss').textContent='−$'+fmt(total/100);
+  valid++;
+ }
+ $('decisionStatus').textContent=valid===2?'FRESH QUOTES':valid===1?'PARTIAL QUOTES':'QUOTES UNUSABLE';
+ $('decisionMeta').textContent='Contract '+m.ticker+' · closes '+readableTime(marketClose(m))+' · quote age '+Math.max(0,Math.floor((now-kalshiFetchedAt)/1000))+'s';
+ $('decisionWarning').textContent=valid===2?'Compare break-even cost with a separately validated probability estimate, not with the 4/4 technical score. Fees and potential fills may differ.':'One or more bid/ask quotes are incomplete, crossed, or extreme. Unusable calculations are hidden.';
+}
+
+renderContractPriceCheck();$('kalshiRefresh').onclick=()=>{loadKalshi();loadTicker()};loadKalshi();loadTicker();setInterval(loadKalshi,20000);setInterval(loadTicker,20000);setInterval(()=>{updateKalshiClock();renderDistance();renderTracker();renderContractPriceCheck();draw();},5000);window.addEventListener('resize',drawGapHistory);load();loadSignalCandles();setInterval(load,60000);setInterval(loadSignalCandles,60000);
 </script></body></html>
